@@ -37,7 +37,7 @@ def get_relatifs(liste, T):
 
 On obtient le graphique suivant
 
-![image](/home/alexis/Desktop/IPython/Electricite/graph2017.png)
+![image](graph2017.png)
 
 Le premier reflexe a ete de verifier la methodologie pour obtenir ces chiffres, mais en verifiant les montants obtenus, on a:
 
