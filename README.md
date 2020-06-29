@@ -26,7 +26,7 @@ totaux = [total_a, total_i, total_t, total_r, total_n]
 total_ensemble = 0
 for total in totaux:
     total_ensemble += total
-    
+
 def get_relatifs(liste, T):
     relatifs = []
     for element in liste:
@@ -71,5 +71,3 @@ Ce qui correspond bien aux totaux par colonnes.
 - Le jeu de donnes 2017 n'a pas d'anomalies, et nous l'avons bien manipule. Il represente tout simplement une annee en dehours du commun en termes de la quantite d'electricite consomme par secteur d'activite.
   
   - TODO: Dans ce cas la, nous allons creer un DataFrame pour chaque anne, en tirer les moyennes, les mediannes, les deviations et les totaux individuels et historiques
-  
-  
