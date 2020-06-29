@@ -1,80 +1,106 @@
-### Etude de la consommation d'électricité par domaine en 2017
+## Consommation d'électricité par secteur d'activite.
 
-Probleme rencontre:
+### Donnees [Open Data AgenceORE]([https://opendata.agenceore.fr/explore/dataset/conso-elec-gaz-annuelle-par-secteur-dactivite-agregee-commune/export/](https://opendata.agenceore.fr/explore/dataset/conso-elec-gaz-annuelle-par-secteur-dactivite-agregee-commune/export/)
 
-lors de la création d'un _sub dataframe_ qui comprend seulement les colonnes correspondant à la consommation par secteur (Agriculture, Industrie, Tertiaire, Résidentiel, Autres. Respectivement: CONSOA, CONSOI, CONSOT, CONSOR, CONSONA)
-on s'aperçoit que nos résultats semblent incohérents par rapport à d'autres analyses (par exemple celle de EDF). En effet:
+Traitement et representation graphique.
 
-- En créant le jeu de données:
-
-```python
-conso = pd.DataFrame()
-conso = elec 2017[['CONSOA', 'CONSOI', 'CONSOT', 'CONSOR', 'CONSONA']]
-conso.head(5)
-```
-
-- Et en calculant ses totaux respectifs (en MWh)
-
-```python
-total_a = conso['CONSOA'].sum()
-total_i = conso['CONSOI'].sum()
-total_t = conso['CONSOT'].sum()
-total_r = conso['CONSOR'].sum()
-total_n = conso['CONSONA'].sum()
-
-totaux = [total_a, total_i, total_t, total_r, total_n]
-total_ensemble = 0
-for total in totaux:
-    total_ensemble += total
-
-def get_relatifs(liste, T):
-    relatifs = []
-    for element in liste:
-        element = element * 100 / T
-        relatifs.append(element)
-    return relatifs
-```
-
-On obtient le graphique suivant
-
-![image](graph2017.png)
-
-Le premier réflexe a été de vérifier la méthodologie pour obtenir ces chiffres, mais en vérifiant les montants obtenus, on a:
-
-```python
-totaux_dict = dict(zip(domaines, totaux))
-totaux_dict
-```
-
-Output: 
-
-```
-{'agriculture': 3572605,
- 'industrie': 1192,
- 'tertiaire': 1290562,
- 'residentiel': 23718681830,
- 'autre': 32716187830}
-```
-
-Ce qui correspond bien aux totaux par colonnes.
-
-### Hypotheses:
-
-- Nous avons mal manipule le jeu de données
+- Creation du DataFrame principal
   
-  - TODO: Se renseigner sur la signifcation des variables aupres de la source [Statistiques developement durable]([https://www.statistiques.developpement-durable.gouv.fr/](https://www.statistiques.developpement-durable.gouv.fr/)
+  ```python
+  import pandas as pd
+  
+  elec = pd.read_csv('conso-elec.csv', encoding='utf_8', sep=';')
+  ```
 
-- Le jeu de données 2017 possède une anomalie
+- Creation d'un DataFrame base sur _elec_ ne comportant que la consommation par secteur
   
-  - TODO: Vérifier auprès d'autres utilisations dans Data Gouv
+  ```python
+  conso_secteur = elec.filter(like='Consommation', axis=1).astype(int)
+  ```
+  
+  - On calcule les totaux de consommation pour chaque secteur et on extrait les etiquettes ou _labels_
+  
+  ```python
+  secteurs = [nom_colonne for nom_colonne in conso_secteur.columns]
+  
+  totaux = []
+  for colonne in conso_secteur:
+      total_secteur = conso_secteur[colonne].sum()
+      totaux.append(total_secteur)
+  ```
 
-- Le jeu de données 2017 n'a pas d'anomalies, et nous l'avons bien manipulé. Il représente tout simplement une année en dehors du commun en termes de la quantité d'électricité consommée par secteur d'activité.
+- Les ettiquettes pretes et les totaux calcules, on peut rapidement visualiser la part d'electricite dediee a chaque secteur d'activite
   
-<<<<<<< HEAD
-  - TODO: Dans ce cas la, nous allons creer un DataFrame pour chaque anne, en tirer les moyennes, les mediannes, les deviations et les totaux individuels et historiques
-=======
-  - TODO: Dans ce cas là, nous allons créer un DataFrame pour chaque année, en tirer les moyennes, les médianes, les déviations et les totaux individuels et historiques
+  ```python
+  import matplotlib.pyplot as plt
+  
+  exp = [0, 0, 0, 0.1, 0]
+  plt.figure(dpi=110)
+  plt.pie(totaux, labels=secteurs, explode=exp, autopct='%1.1f%%', startangle=0, labeldistance=1.4, pctdistance=0.8)
+  plt.axis('equal')
+  plt.show()
+  ```
+  
+  - On obtient la figure suivante. Elle represente la consommation en MWh de chaque secteur d'activite, de 2011 a 2018
 
+![image](/home/alexis/Desktop/IPython/Electricite/Open Data - ORE/camembert.png)
+
+---
+
+### Nous souhaitons a present voir l'evolution de la consommation par an
+
+- On groupe le _DataFrame_ et on additionne les lignes
   
+  ```python
+  par_an = elec.groupby('Année').sum()
+  par_an.reset_index(inplace=True)
+  ```
+
+- Liste des annees pour l'axe _x_ du graphique
   
->>>>>>> 3e8fa8a7a0c67a87c2c7179437616c4c79c9d1c1
+  ```python
+  annees = [ligne for ligne in par_an['Année']]
+  ```
+
+- Rendre plus lisibles les totaux de consommation energetique
+  
+  ```python
+  totaux_annee = [total for total in par_an['consototale'].astype(int) / 10**6]
+  ```
+
+- On trace notre graphique
+  
+  ```python
+  plt.figure(dpi=150)
+  plt.bar(annees, totaux_annee)
+  plt.xticks(annees, rotation='90', fontsize=8)
+  plt.ylabel('Consommation totale tous secteurs en TWh')
+  plt.title('Consommation totale d\'electricite par an')
+  plt.show()
+  ```
+  
+  On obtient une figure de la facon suivante
+
+![image](/home/alexis/Desktop/IPython/Electricite/Open Data - ORE/barres.png)
+
+---
+
+### Faisons cela un peu plus interessant en representant l'evolution par an _et_ par secteur
+
+- Filtrer les colonnes qui nous interessent pas (pour le moment)
+  
+  ```python
+  par_an_et_secteur = par_an.filter(like='Consommation', axis=1)
+  ```
+
+- Et on trace le graphique
+  
+  ```python
+  par_an_et_secteur.plot(kind='bar', stacked=True, figsize=(15,10), rot=0, colormap='inferno')
+  ```
+  
+  - On obtient
+
+![image](/home/alexis/Desktop/IPython/Electricite/Open Data - ORE/barres2.png)
+
+
