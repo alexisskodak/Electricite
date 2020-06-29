@@ -1,15 +1,15 @@
-### Etude de la consommation d'electricite par domaine en 2017
+### Etude de la consommation d'électricité par domaine en 2017
 
 Probleme rencontre:
 
-lors de la creation d'un _sub dataframe_ qui comprend seulement les colonnes correspondant a la consommation par secteur (Agriculture, Industrie, Tertiaire, Residentiel, Autres. Respectivement: CONSOA, CONSOI, CONSOT, CONSOR, CONSONA)
-on s'appercoit que nos resultats semblent incoherents par rapport a d'autres analyses (par exemple celle de EDF). En effet:
+lors de la création d'un _sub dataframe_ qui comprend seulement les colonnes correspondant à la consommation par secteur (Agriculture, Industrie, Tertiaire, Résidentiel, Autres. Respectivement: CONSOA, CONSOI, CONSOT, CONSOR, CONSONA)
+on s'aperçoit que nos résultats semblent incohérents par rapport à d'autres analyses (par exemple celle de EDF). En effet:
 
-- En creeant le jeu de donnes:
+- En créant le jeu de données:
 
 ```python
 conso = pd.DataFrame()
-conso = elec2017[['CONSOA', 'CONSOI', 'CONSOT', 'CONSOR', 'CONSONA']]
+conso = elec 2017[['CONSOA', 'CONSOI', 'CONSOT', 'CONSOR', 'CONSONA']]
 conso.head(5)
 ```
 
@@ -37,9 +37,9 @@ def get_relatifs(liste, T):
 
 On obtient le graphique suivant
 
-![image](/home/alexis/Desktop/IPython/Electricite/graph2017.png)
+![image](graph2017.png)
 
-Le premier reflexe a ete de verifier la methodologie pour obtenir ces chiffres, mais en verifiant les montants obtenus, on a:
+Le premier réflexe a été de vérifier la méthodologie pour obtenir ces chiffres, mais en vérifiant les montants obtenus, on a:
 
 ```python
 totaux_dict = dict(zip(domaines, totaux))
@@ -60,14 +60,21 @@ Ce qui correspond bien aux totaux par colonnes.
 
 ### Hypotheses:
 
-- Nous avons mal manipule le jeu de donnees
+- Nous avons mal manipule le jeu de données
   
   - TODO: Se renseigner sur la signifcation des variables aupres de la source [Statistiques developement durable]([https://www.statistiques.developpement-durable.gouv.fr/](https://www.statistiques.developpement-durable.gouv.fr/)
 
-- Le jeu de donnes 2017 possede une anomalie
+- Le jeu de données 2017 possède une anomalie
   
-  - TODO: Verifier aupres d'autres reutilisations dans Data Gouv
+  - TODO: Vérifier auprès d'autres utilisations dans Data Gouv
 
-- Le jeu de donnes 2017 n'a pas d'anomalies, et nous l'avons bien manipule. Il represente tout simplement une annee en dehours du commun en termes de la quantite d'electricite consomme par secteur d'activite.
+- Le jeu de données 2017 n'a pas d'anomalies, et nous l'avons bien manipulé. Il représente tout simplement une année en dehors du commun en termes de la quantité d'électricité consommée par secteur d'activité.
   
+<<<<<<< HEAD
   - TODO: Dans ce cas la, nous allons creer un DataFrame pour chaque anne, en tirer les moyennes, les mediannes, les deviations et les totaux individuels et historiques
+=======
+  - TODO: Dans ce cas là, nous allons créer un DataFrame pour chaque année, en tirer les moyennes, les médianes, les déviations et les totaux individuels et historiques
+
+  
+  
+>>>>>>> 3e8fa8a7a0c67a87c2c7179437616c4c79c9d1c1
