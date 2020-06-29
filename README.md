@@ -1,10 +1,10 @@
-## Consommation d'électricité par secteur d'activite.
+## Consommation d'électricité par secteur d'activité.
 
-### Donnees [Open Data AgenceORE]([https://opendata.agenceore.fr/explore/dataset/conso-elec-gaz-annuelle-par-secteur-dactivite-agregee-commune/export/](https://opendata.agenceore.fr/explore/dataset/conso-elec-gaz-annuelle-par-secteur-dactivite-agregee-commune/export/)
+### Donnees [Open Data AgenceORE](https://opendata.agenceore.fr/explore/dataset/conso-elec-gaz-annuelle-par-secteur-dactivite-agregee-commune/export/)
 
-Traitement et representation graphique.
+Traitement et représentation graphique.
 
-- Creation du DataFrame principal
+- Création du DataFrame principal
   
   ```python
   import pandas as pd
@@ -12,13 +12,13 @@ Traitement et representation graphique.
   elec = pd.read_csv('conso-elec.csv', encoding='utf_8', sep=';')
   ```
 
-- Creation d'un DataFrame base sur _elec_ ne comportant que la consommation par secteur
+- Création d'un DataFrame base sur _elec_ ne comportant que la consommation par secteur
   
   ```python
   conso_secteur = elec.filter(like='Consommation', axis=1).astype(int)
   ```
   
-  - On calcule les totaux de consommation pour chaque secteur et on extrait les etiquettes ou _labels_
+  - On calcule les totaux de consommation pour chaque secteur et on extrait les étiquettes ou _labels_
   
   ```python
   secteurs = [nom_colonne for nom_colonne in conso_secteur.columns]
@@ -29,7 +29,7 @@ Traitement et representation graphique.
       totaux.append(total_secteur)
   ```
 
-- Les ettiquettes pretes et les totaux calcules, on peut rapidement visualiser la part d'electricite dediee a chaque secteur d'activite
+- Les étiquettes prêtes et les totaux calcules, on peut rapidement visualiser la part d'électricité dédiée à chaque secteur d'activité
   
   ```python
   import matplotlib.pyplot as plt
@@ -41,13 +41,13 @@ Traitement et representation graphique.
   plt.show()
   ```
   
-  - On obtient la figure suivante. Elle represente la consommation en MWh de chaque secteur d'activite, de 2011 a 2018
+  - On obtient la figure suivante. Elle représente la consommation en MWh de chaque secteur d'activité, de 2011 à 2018
 
-![image](/home/alexis/Desktop/IPython/Electricite/Open Data - ORE/camembert.png)
+![image](camembert.png)
 
 ---
 
-### Nous souhaitons a present voir l'evolution de la consommation par an
+### Nous souhaitons à présent voir l'évolution de la consommation par an
 
 - On groupe le _DataFrame_ et on additionne les lignes
   
@@ -56,13 +56,13 @@ Traitement et representation graphique.
   par_an.reset_index(inplace=True)
   ```
 
-- Liste des annees pour l'axe _x_ du graphique
+- Liste des années pour l'axe _x_ du graphique
   
   ```python
   annees = [ligne for ligne in par_an['Année']]
   ```
 
-- Rendre plus lisibles les totaux de consommation energetique
+- Rendre plus lisibles les totaux de consommation énergétique
   
   ```python
   totaux_annee = [total for total in par_an['consototale'].astype(int) / 10**6]
@@ -79,15 +79,15 @@ Traitement et representation graphique.
   plt.show()
   ```
   
-  On obtient une figure de la facon suivante
+  On obtient une figure de la façon suivante
 
-![image](/home/alexis/Desktop/IPython/Electricite/Open Data - ORE/barres.png)
+![image](barres.png)
 
 ---
 
-### Faisons cela un peu plus interessant en representant l'evolution par an _et_ par secteur
+### Faisons cela un peu plus intéressant en représentant l'évolution par an _et_ par secteur
 
-- Filtrer les colonnes qui nous interessent pas (pour le moment)
+- Filtrer les colonnes qui nous intéressent pas (pour le moment)
   
   ```python
   par_an_et_secteur = par_an.filter(like='Consommation', axis=1)
@@ -101,6 +101,8 @@ Traitement et representation graphique.
   
   - On obtient
 
-![image](/home/alexis/Desktop/IPython/Electricite/Open Data - ORE/barres2.png)
+![image](barres2.png)
+
+
 
 
