@@ -103,7 +103,7 @@ Traitement et représentation graphique.
 
 ![image](barres2.png)
 
-### Une maniere plus interessante de visualiser grace au _backend_ `pandas_bokeh` de la bibliotheque `bokeh`
+### Une manière plus intéressante de visualiser grâce au _ backend `pandas_bokeh` de la bibliothèque `bokeh`
 
 ```python
 import pandas_bokeh
@@ -112,8 +112,9 @@ pd.set_option('plotting.backend', 'pandas_bokeh')
 par_an_et_secteur.plot(kind='area', x=par_an_et_secteur['Annee'], stacked=True, figsize=(1000,600),legend='top_left')
 ```
 
-Ce _backend_ nous permet de creer des visualisations interactives. L'utilisateur peut voir la valeur specifique que prend une absice en positionnant le curseur dans un endroit du graphique, il peut egalement zoomer, afficher ou masquer la legende, entre autres.
+Ce _backend_ nous permet de créer des visualisations interactives. L'utilisateur peut voir la valeur spécifique que prend une abscisse en positionnant le curseur dans un endroit du graphique, il peut également zoomer, afficher ou masquer la légende, entre autres.
 
-![image](/home/alexis/Desktop/IPython/Electricite/bokeh_zone.png)
+![image](bokeh_zone.png)
 
-#### Il serait interessant par la suite de mener l'interactivite de nos visualisations a un niveau superieur. Par le bias d'un tableau de bord ou d'une application web par exemple.
+#### Il serait intéressant par la suite de mener l'interactivité de nos visualisations à un niveau supérieur. Par le biais d'un tableau de bord ou d'une application web par exemple.
+
