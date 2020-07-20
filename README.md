@@ -117,4 +117,3 @@ Ce _backend_ nous permet de créer des visualisations interactives. L'utilisateu
 ![image](bokeh_zone.png)
 
 #### Il serait intéressant par la suite de mener l'interactivité de nos visualisations à un niveau supérieur. Par le biais d'un tableau de bord ou d'une application web par exemple.
-
